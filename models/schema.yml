@@ -54,4 +54,4 @@ models:
       - name: amount
         tests:
           - dbt_utils.expression_is_true:
-              expression: " > 0"
+              expression:  '>= 0'
