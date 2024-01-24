@@ -39,3 +39,19 @@ models:
           - relationships:
               to: ref('stg_customers')
               field: customer_id
+  - name: stg_payment
+    description: This model cleans up paymant data
+    columns:
+      - name: payment_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: paymentmethod
+        tests:
+          - accepted_values:
+              values: ['bank_transfer','coupon','gift_card','credit_card']
+      - name: amount
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: " > 0"
