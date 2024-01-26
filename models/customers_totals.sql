@@ -12,7 +12,7 @@ payments as (
 customer_amounts as (
     select 
         orders.customer_id,
-        sum(payments.amount) as total_amount
+        sum(case when payments.status = 'success' then payments.amount end ) as total_amount
     from orders
 left join payments using(order_id)
 group by 1
@@ -22,7 +22,7 @@ final as (
     select
        customers.first_name,
        customers.last_name,
-       customer_amounts. total_amount
+       coalesce(customer_amounts.total_amount,0) as total_amount
     from customers left join customer_amounts using(customer_id)
 )
 
