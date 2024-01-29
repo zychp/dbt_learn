@@ -1,8 +1,8 @@
 with orders as (
-    select * from {{ref("stg_orders")}}
+    select * from {{source('jaffle_shop','orders')}}
 ),
 payments as (
-    select * from {{ref('stg_payment')}}
+    select * from {{source('stripe','payment')}}
 
 ),
 order_payments as (
