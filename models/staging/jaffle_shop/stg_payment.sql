@@ -5,4 +5,4 @@ select
     amount/100 as amount,
     status
 
-from `dbt-tutorial`.stripe.payment
+from {{source('stripe', 'payment')}}
