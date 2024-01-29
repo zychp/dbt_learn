@@ -11,6 +11,20 @@ models:
           - not_null
       - name: first_order_date
         description: NULL when a customer has not yet placed an order.
+  - name: fct_orders
+    description: This model joins stg_orders with stg_payment and contain as many lines for each customer as the there was orders placed by a customer.
+    columns:
+      - name: order_id
+        description: identifies an order
+        tests:
+          - unique
+          - not_null
+        
+      - name: amount
+        description: sum of amount spent by a customer per order provided payment was successful
+        tests:
+          - dbt_utils.expression_is_true:
+              expression:  '>= 0'
 
   - name: stg_customers
     description: This model cleans up customer data
