@@ -1,11 +1,9 @@
 with customers as (
     select * from {{ ref('stg_customers') }}
-    --#select * from {{ source('jaffle_shop', 'customers') }}
 ),
 
 orders as (
     select * from {{ ref('fct_orders') }}
-    --#select * from {{source('jaffle_shop','orders')}}
 ),
 
 customer_orders as (
