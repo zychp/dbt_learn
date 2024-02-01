@@ -16,7 +16,7 @@ with
             orders.customer_id,
             orders.order_date,
             case 
-              when orders.status = 'success'
+              when orders.status = 'completed'
               then 1 
               else 0 
             end as is_order_completed,

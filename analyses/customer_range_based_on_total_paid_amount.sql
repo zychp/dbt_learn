@@ -28,4 +28,5 @@ select
         crp.classification
 from total_amount_per_customer_on_orders_complete as tac
 left join customer_range_per_paid_amount as crp
-on tac.global_paid_amount >= crp.min_range and tac.global_paid_amount <= crp.max_range
+    on tac.global_paid_amount >= crp.min_range
+        and tac.global_paid_amount <= crp.max_range
