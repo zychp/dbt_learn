@@ -3,7 +3,10 @@ with
     payment as (select * from {{ ref('stg_payment') }}),
 
     order_payments as (
-        select order_id, sum(case when status = 'success' then amount end) as amount
+        select order_id, 
+        sum(
+            case when status = 'success' then amount end
+            ) as amount
         from payment
         group by 1
     ),
@@ -12,9 +15,14 @@ with
             orders.order_id,
             orders.customer_id,
             orders.order_date,
-            coalesce(order_payments.amount, 0) as amount
+            case 
+              when orders.status = 'success'
+              then 1 
+              else 0 
+            end as is_order_completed,
+            coalesce(order_payments.amount, 0) as total_amount
         from orders
         left join order_payments using (order_id)
         order by customer_id
     )
-select * from final
+select * from final order by is_order_completed desc

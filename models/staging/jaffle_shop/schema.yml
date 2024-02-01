@@ -20,7 +20,7 @@ models:
           - unique
           - not_null
         
-      - name: amount
+      - name: total_amount
         description: sum of amount spent by a customer per order provided payment was successful
         tests:
           - dbt_utils.expression_is_true:

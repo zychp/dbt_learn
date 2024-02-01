@@ -18,6 +18,7 @@ with payment as (
             then 'credit'
             else 'cash' end as payment_type
 
-from `dbt-tutorial.stripe.payment`
+#from `dbt-tutorial.stripe.payment`
+from  {{source('stripe','payment')}}
 ) 
 select * from payment
