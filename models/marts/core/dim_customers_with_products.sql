@@ -2,28 +2,29 @@ with fct_orders as (
     select * from {{ ref('fct_orders')}}
 ),
 
-dim_customers as  (
-    select * from {{ ref('dim_customers' )}}
-),
-total_amount_per_customer_on_orders_complete as (
-    select
-        cust.customer_id,
-        cust.first_name,
-        SUM(total_amount) as global_paid_amount
-    from fct_orders as ord
-    left join dim_customers as cust ON ord.customer_id = cust.customer_id
-    where ord.is_order_completed = 1
-    group by cust.customer_id, first_name
-),
 product_mappings as (
-    select * from {{ ref('seed_product_mappings' )}}
+    select * from {{ ref('seed_product_mapping' ) }}
+),
+
+orders_with_mapped_products as (
+  select 
+    fo.customer_id,
+    fo.product,
+    pm.product as mapping_product,
+    pm.regimen
+  from
+    fct_orders as fo
+    left join product_mappings as pm
+    on 
+    fo.product LIKE '%' || pm.product || '%'
 )
-select
-        tac.customer_id,
-        tac.first_name,
-        tac.last_name,
-        tac.global_paid_amount,
-        crp.classification
-from total_amount_per_customer_on_orders_complete as tac
-left join product_mappings as pm
-    on tac.product in pm.product
+
+SELECT
+    p.*,
+    pbm.regimen AS mapped_bucket
+FROM
+    orders_with_mapped_products p
+LEFT JOIN
+    product_mappings pbm
+ON
+    p.mapping_product = pbm.product

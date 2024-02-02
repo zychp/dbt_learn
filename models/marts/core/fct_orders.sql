@@ -22,9 +22,9 @@ with
             end as is_order_completed,
             coalesce(order_payments.amount, 0) as total_amount,
             case
-              when orders.order_id = 50 
-              then 'Ado-Trastuzumab' 
-              else 'Pertuzumab+Trastuzumab' 
+              when orders.order_id <= 50 
+              then 'AdoTrastuzumab' 
+              else 'PertuzumabTrastuzumab' 
             end
             as product
         from orders
