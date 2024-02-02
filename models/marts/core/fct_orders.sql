@@ -6,7 +6,7 @@ with
         select order_id, 
         sum(
             case when status = 'success' then amount end
-            ) as amount
+            ) as amount,
         from payment
         group by 1
     ),
@@ -20,7 +20,13 @@ with
               then 1 
               else 0 
             end as is_order_completed,
-            coalesce(order_payments.amount, 0) as total_amount
+            coalesce(order_payments.amount, 0) as total_amount,
+            case
+              when orders.order_id = 50 
+              then 'Ado-Trastuzumab' 
+              else 'Pertuzumab+Trastuzumab' 
+            end
+            as product
         from orders
         left join order_payments using (order_id)
         order by customer_id
