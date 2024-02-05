@@ -9,22 +9,26 @@ product_mappings as (
 orders_with_mapped_products as (
   select 
     fo.customer_id,
-    fo.product,
-    pm.product as mapping_product,
-    pm.regimen
+    fo.product as orig_prod ,
+    pm.*
   from
     fct_orders as fo
     left join product_mappings as pm
-    on 
-    fo.product LIKE '%' || pm.product || '%'
+    on
+    instr(fo.product, pm.product) > 0
+    --instr(pm.product, fo.product)>0
+    --((fo.product like '%PertuzumabTrastuzumab%') or (fo.product like '%AdoTrastuzumab%'))
+    --fo.product LIKE '%' || pm.product || '%'
 )
 
 SELECT
-    p.*,
-    pbm.regimen AS mapped_bucket
+    p.customer_id,
+    p.orig_prod,
+    pm.*
+    
 FROM
     orders_with_mapped_products p
 LEFT JOIN
-    product_mappings pbm
+    product_mappings pm
 ON
-    p.mapping_product = pbm.product
+    p.orig_prod LIKE '%' || pm.product || '%'

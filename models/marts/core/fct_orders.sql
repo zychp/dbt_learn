@@ -23,8 +23,8 @@ with
             coalesce(order_payments.amount, 0) as total_amount,
             case
               when orders.order_id <= 50 
-              then 'AdoTrastuzumab' 
-              else 'PertuzumabTrastuzumab' 
+              then 'Ado-trastuzumab/ Anastrozole/ Cyclophosphamide/ Docetaxel/ Trastuzumab' 
+              else 'Cyclophosphamide/ Docetaxel/ Doxorubicin/ Pertuzumab+Trastuzumab/ Tamoxifen'
             end
             as product
         from orders
