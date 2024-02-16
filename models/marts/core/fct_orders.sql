@@ -22,9 +22,22 @@ with
             end as is_order_completed,
             coalesce(order_payments.amount, 0) as total_amount,
             case
-              when orders.order_id <= 50 
+              when orders.order_id > 0 and orders.order_id <= 50 
+              then 'January 2023'
+              when orders.order_id > 50 and orders.order_id <= 70
+              then 'October 2022'
+              when orders.order_id > 70 and orders.order_id <= 100
+              then 'July 2021'
+              else null
+              end as some_date,
+            case
+              when orders.order_id > 0 and orders.order_id <= 50 
               then 'Ado-trastuzumab/ Anastrozole/ Cyclophosphamide/ Docetaxel/ Trastuzumab' 
-              else 'Cyclophosphamide/ Docetaxel/ Doxorubicin/ Pertuzumab+Trastuzumab/ Tamoxifen'
+              when orders.order_id > 50 and orders.order_id <= 70
+              then 'Cyclophosphamide/ Doxorubicin/ Letrozole'
+              when  orders.order_id > 70 and orders.order_id <= 100
+              then 'Pertuzumab, Trastuzumab'
+              else null
             end
             as product
         from orders
